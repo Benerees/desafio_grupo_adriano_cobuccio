@@ -25,8 +25,7 @@ export class AdminOrMeGuard implements CanActivate {
         if (user.role === 'admin') return true;
 
         const params = req.params || {};
-        const resourceId =
-            params['id'] || params['userId'] || params['accountId'];
+        const resourceId = params['id'];
         if (!resourceId) {
             throw new ForbiddenException(
                 'Missing resource identifier for ownership check',
