@@ -9,14 +9,17 @@ export class TransactionRepository {
     constructor(@Inject('SEQUELIZE') private readonly sequelize: Sequelize) {}
 
     async findById(id: string) {
-        return TransactionModel.findByPk(id); 
+        return TransactionModel.findByPk(id);
     }
 
     async create(payload: TransactionModel, options?: any) {
         return TransactionModel.create(payload, options);
     }
 
-    async update(transactionModel: TransactionModel, payload: Partial<TransactionModel>) {
+    async update(
+        transactionModel: TransactionModel,
+        payload: Partial<TransactionModel>,
+    ) {
         return transactionModel.update(payload);
     }
 
@@ -25,8 +28,12 @@ export class TransactionRepository {
     }
 
     async findByUser(userId: string, paginationQuery: PaginationQueryDto) {
-        const page = Number(paginationQuery.page) > 0 ? Number(paginationQuery.page) : 1;
-        const limit = Number(paginationQuery.limit) > 0 ? Number(paginationQuery.limit) : 10;
+        const page =
+            Number(paginationQuery.page) > 0 ? Number(paginationQuery.page) : 1;
+        const limit =
+            Number(paginationQuery.limit) > 0
+                ? Number(paginationQuery.limit)
+                : 10;
         const offset = (page - 1) * limit;
 
         const where = {
@@ -46,6 +53,6 @@ export class TransactionRepository {
             page,
             limit,
             totalPages: Math.ceil(Number(result.count) / limit),
-        }as PaginatedTransactionsDto;
+        } as PaginatedTransactionsDto;
     }
 }

@@ -1,4 +1,10 @@
-import { Injectable, CanActivate, ExecutionContext, UnauthorizedException, ForbiddenException } from '@nestjs/common';
+import {
+    Injectable,
+    CanActivate,
+    ExecutionContext,
+    UnauthorizedException,
+    ForbiddenException,
+} from '@nestjs/common';
 import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Injectable()
@@ -11,8 +17,12 @@ export class AdminGuard implements CanActivate {
 
         const req = context.switchToHttp().getRequest();
         const user = req.user;
-        if (!user) throw new UnauthorizedException('Missing user after token validation');
-        if (user.role !== 'admin') throw new ForbiddenException('Admin role required');
+        if (!user)
+            throw new UnauthorizedException(
+                'Missing user after token validation',
+            );
+        if (user.role !== 'admin')
+            throw new ForbiddenException('Admin role required');
         return true;
     }
 }

@@ -13,10 +13,19 @@ const jwtExpires = process.env.JWT_EXPIRES ?? '1h';
 @Module({
     imports: [
         SequelizeModule,
-        JwtModule.register({ secret: process.env.JWT_SECRET || 'secret', signOptions: { expiresIn: jwtExpires as any } }),
+        JwtModule.register({
+            secret: process.env.JWT_SECRET || 'secret',
+            signOptions: { expiresIn: jwtExpires as any },
+        }),
     ],
     controllers: [AuthController],
-    providers: [AuthService, UserRepository, JwtAuthGuard, AdminGuard, AdminOrMeGuard],
+    providers: [
+        AuthService,
+        UserRepository,
+        JwtAuthGuard,
+        AdminGuard,
+        AdminOrMeGuard,
+    ],
     exports: [AuthService, JwtModule, JwtAuthGuard, AdminGuard, AdminOrMeGuard],
 })
 export class AuthModule {}

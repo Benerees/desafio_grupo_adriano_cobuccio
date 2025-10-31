@@ -11,7 +11,7 @@ jest.mock('sequelize-typescript', () => {
         static hasMany = jest.fn();
     };
 
-    const noopDecorator = () => () => {}; 
+    const noopDecorator = () => () => {};
 
     return {
         Model: mockModel,
@@ -33,7 +33,6 @@ jest.mock('sequelize-typescript', () => {
         BelongsToMany: noopDecorator,
     };
 });
-
 
 jest.mock('../models/user.model', () => ({
     User: {
@@ -152,9 +151,7 @@ describe('Database Providers', () => {
             providers: [...databaseProvider],
         }).compile();
 
-        expect(loggerErrorSpy).toHaveBeenCalledWith(
-            syncError,
-        );
+        expect(loggerErrorSpy).toHaveBeenCalledWith(syncError);
 
         loggerErrorSpy.mockRestore();
     });

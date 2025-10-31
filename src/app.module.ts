@@ -7,7 +7,13 @@ import { UserModule } from './modules/users/user.module';
 import { LoggingModule } from './common/logging/logging.module';
 
 @Module({
-    imports: [SequelizeModule, AuthModule, TransactionModule, UserModule, LoggingModule],
+    imports: [
+        SequelizeModule,
+        AuthModule,
+        TransactionModule,
+        UserModule,
+        LoggingModule,
+    ],
     controllers: [HealthController],
 })
 export class AppModule {}

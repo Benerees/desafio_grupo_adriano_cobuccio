@@ -9,23 +9,38 @@ export class MoneyService {
         }
     }
 
-    static add(a: string | number | Decimal, b: string | number | Decimal): Decimal {
+    static add(
+        a: string | number | Decimal,
+        b: string | number | Decimal,
+    ): Decimal {
         return this.parse(a).add(this.parse(b));
     }
 
-    static sub(a: string | number | Decimal, b: string | number | Decimal): Decimal {
+    static sub(
+        a: string | number | Decimal,
+        b: string | number | Decimal,
+    ): Decimal {
         return this.parse(a).sub(this.parse(b));
     }
 
-    static lt(a: string | number | Decimal, b: string | number | Decimal): boolean {
+    static lt(
+        a: string | number | Decimal,
+        b: string | number | Decimal,
+    ): boolean {
         return this.parse(a).lt(this.parse(b));
     }
 
-    static lte(a: string | number | Decimal, b: string | number | Decimal): boolean {
+    static lte(
+        a: string | number | Decimal,
+        b: string | number | Decimal,
+    ): boolean {
         return this.parse(a).lte(this.parse(b));
     }
 
-    static toString(value: string | number | Decimal, decimalPlaces = 2): string {
+    static toString(
+        value: string | number | Decimal,
+        decimalPlaces = 2,
+    ): string {
         return this.parse(value).toFixed(decimalPlaces);
     }
 

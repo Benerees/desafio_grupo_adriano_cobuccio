@@ -1,4 +1,8 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+    ConflictException,
+    Injectable,
+    NotFoundException,
+} from '@nestjs/common';
 import { UserRepository } from '../../common/repositories/user.repository';
 import { IUserService } from './interfaces/user.service.interface';
 import { PatchUserDto } from './dto/patch-user.dto';
@@ -27,9 +31,10 @@ export class UserService implements IUserService {
         return user;
     }
 
-    async list(paginationQuery: PaginationQueryDto): Promise<PaginatedUsersDto> {
+    async list(
+        paginationQuery: PaginationQueryDto,
+    ): Promise<PaginatedUsersDto> {
         return await this.userRepository.findAll(paginationQuery);
-        
     }
 
     async update(id: string, dto: PatchUserDto): Promise<UserResponseDto> {
@@ -37,14 +42,16 @@ export class UserService implements IUserService {
         if (!user) {
             throw new NotFoundException('User not found');
         }
-        
-        if( dto.email && dto.email !== user.email) {
-            const emailExists = await this.userRepository.findByEmail(dto.email);
-            if(emailExists) {
+
+        if (dto.email && dto.email !== user.email) {
+            const emailExists = await this.userRepository.findByEmail(
+                dto.email,
+            );
+            if (emailExists) {
                 throw new ConflictException('Email already registered');
             }
         }
-        
+
         const updateData = { ...dto };
         if (dto.password) {
             updateData.password = await bcrypt.hash(dto.password, 10);

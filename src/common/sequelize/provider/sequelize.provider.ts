@@ -41,10 +41,7 @@ export const databaseProvider = [
                 },
                 logging: false,
             });
-            sequelize.addModels([
-                User,
-                TransactionModel
-            ]);
+            sequelize.addModels([User, TransactionModel]);
 
             try {
                 await sequelize.sync({ logging: false });
@@ -52,7 +49,10 @@ export const databaseProvider = [
                     try {
                         await runSeedUsers();
                     } catch (seedErr) {
-                        logger.warn('Seeds não puderam ser executadas: ' + seedErr.message);
+                        logger.warn(
+                            'Seeds não puderam ser executadas: ' +
+                                seedErr.message,
+                        );
                     }
                 }
             } catch (error) {

@@ -1,4 +1,14 @@
-import { Table, Model, Column, DataType, PrimaryKey, Default, ForeignKey, BelongsTo, BeforeCreate } from 'sequelize-typescript';
+import {
+    Table,
+    Model,
+    Column,
+    DataType,
+    PrimaryKey,
+    Default,
+    ForeignKey,
+    BelongsTo,
+    BeforeCreate,
+} from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { User } from './user.model';
 
@@ -23,7 +33,10 @@ export class TransactionModel extends Model<TransactionModel> {
     declare amount: string;
 
     @Default('pending')
-    @Column({ type: DataType.ENUM('pending', 'completed', 'reversed'), allowNull: false })
+    @Column({
+        type: DataType.ENUM('pending', 'completed', 'reversed'),
+        allowNull: false,
+    })
     declare status: TransactionStatus;
 
     @BelongsTo(() => User, 'senderId')

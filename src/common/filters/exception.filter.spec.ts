@@ -10,12 +10,10 @@ describe('AllExceptionsFilter', () => {
         filter = new AllExceptionsFilter();
         mockResponse = { status: jest.fn().mockReturnThis(), json: jest.fn() };
         mockHost = {
-            switchToHttp: jest
-                .fn()
-                .mockReturnValue({
-                    getResponse: () => mockResponse,
-                    getRequest: () => ({ url: '/test' }),
-                }),
+            switchToHttp: jest.fn().mockReturnValue({
+                getResponse: () => mockResponse,
+                getRequest: () => ({ url: '/test' }),
+            }),
         };
     });
 

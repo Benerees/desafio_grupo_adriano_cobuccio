@@ -24,8 +24,12 @@ export class UserRepository {
     }
 
     async findAll(paginationQuery: PaginationQueryDto) {
-        const page = Number(paginationQuery.page) > 0 ? Number(paginationQuery.page) : 1;
-        const limit = Number(paginationQuery.limit) > 0 ? Number(paginationQuery.limit) : 10;
+        const page =
+            Number(paginationQuery.page) > 0 ? Number(paginationQuery.page) : 1;
+        const limit =
+            Number(paginationQuery.limit) > 0
+                ? Number(paginationQuery.limit)
+                : 10;
         const offset = (page - 1) * limit;
 
         const result = await User.findAndCountAll({
