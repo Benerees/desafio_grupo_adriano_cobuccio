@@ -37,7 +37,9 @@ describe('UserRepository', () => {
 
     it('findAll returns paginated shape', async () => {
         const rows = [{ id: 'a' }, { id: 'b' }];
-        (UserModel as any).User.findAndCountAll = jest.fn().mockResolvedValue({ rows, count: 2 });
+        (UserModel as any).User.findAndCountAll = jest
+            .fn()
+            .mockResolvedValue({ rows, count: 2 });
         const res = await repo.findAll({ page: 1, limit: 10 } as any);
         expect(res.items).toBe(rows);
         expect(res.total).toBe(2);
@@ -45,24 +47,32 @@ describe('UserRepository', () => {
     });
 
     it('softDelete returns null when not found and user when found', async () => {
-    (UserModel as any).User.findByPk = jest.fn().mockResolvedValueOnce(null);
+        (UserModel as any).User.findByPk = jest
+            .fn()
+            .mockResolvedValueOnce(null);
         const res1 = await repo.softDelete('x');
         expect(res1).toBeNull();
 
         const inst: any = { destroy: jest.fn().mockResolvedValue(true) };
-    (UserModel as any).User.findByPk = jest.fn().mockResolvedValueOnce(inst);
+        (UserModel as any).User.findByPk = jest
+            .fn()
+            .mockResolvedValueOnce(inst);
         const res2 = await repo.softDelete('y');
         expect(res2).toBe(inst);
         expect(inst.destroy).toHaveBeenCalled();
     });
 
     it('restore returns null when not found and calls restore when found', async () => {
-    (UserModel as any).User.findByPk = jest.fn().mockResolvedValueOnce(null);
+        (UserModel as any).User.findByPk = jest
+            .fn()
+            .mockResolvedValueOnce(null);
         const res1 = await repo.restore('x');
         expect(res1).toBeNull();
 
         const inst: any = { restore: jest.fn().mockResolvedValue(true) };
-    (UserModel as any).User.findByPk = jest.fn().mockResolvedValueOnce(inst);
+        (UserModel as any).User.findByPk = jest
+            .fn()
+            .mockResolvedValueOnce(inst);
         const res2 = await repo.restore('y');
         expect(res2).toBe(inst);
         expect(inst.restore).toHaveBeenCalled();

@@ -25,7 +25,9 @@ describe('UserService', () => {
     });
 
     it('list calls repository findAll', async () => {
-        const userRepo: any = { findAll: jest.fn().mockResolvedValue({ items: [], total: 0 }) };
+        const userRepo: any = {
+            findAll: jest.fn().mockResolvedValue({ items: [], total: 0 }),
+        };
         const svc = new UserService(userRepo);
         const res = await svc.list({} as any);
         expect(userRepo.findAll).toHaveBeenCalled();
@@ -36,19 +38,27 @@ describe('UserService', () => {
         const user = { id: '1', email: 'a@b' } as any;
         const userRepo: any = { findById: jest.fn().mockResolvedValue(null) };
         const svc = new UserService(userRepo);
-        await expect(svc.update('1', { name: 'x' } as any)).rejects.toThrow('User not found');
+        await expect(svc.update('1', { name: 'x' } as any)).rejects.toThrow(
+            'User not found',
+        );
 
         // email conflict
         userRepo.findById.mockResolvedValueOnce(user);
         userRepo.findByEmail = jest.fn().mockResolvedValue({ id: 'other' });
-        await expect(svc.update('1', { email: 'other@x' } as any)).rejects.toThrow('Email already registered');
+        await expect(
+            svc.update('1', { email: 'other@x' } as any),
+        ).rejects.toThrow('Email already registered');
     });
 
     it('update hashes password and calls update', async () => {
         const user = { id: '1', email: 'a@b' } as any;
         const updated = { id: '1', name: 'n' };
-        const userRepo: any = { findById: jest.fn().mockResolvedValue(user), findByEmail: jest.fn().mockResolvedValue(null), update: jest.fn().mockResolvedValue(updated) };
-    bcryptMock.hash.mockResolvedValue('hashed');
+        const userRepo: any = {
+            findById: jest.fn().mockResolvedValue(user),
+            findByEmail: jest.fn().mockResolvedValue(null),
+            update: jest.fn().mockResolvedValue(updated),
+        };
+        bcryptMock.hash.mockResolvedValue('hashed');
         const svc = new UserService(userRepo);
         const res = await svc.update('1', { password: 'p' } as any);
         expect(bcrypt.hash).toHaveBeenCalled();
@@ -57,7 +67,10 @@ describe('UserService', () => {
     });
 
     it('softDelete and restore throw when not found and return ids when found', async () => {
-        const userRepo: any = { softDelete: jest.fn().mockResolvedValue(null), restore: jest.fn().mockResolvedValue(null) };
+        const userRepo: any = {
+            softDelete: jest.fn().mockResolvedValue(null),
+            restore: jest.fn().mockResolvedValue(null),
+        };
         const svc = new UserService(userRepo);
         await expect(svc.softDelete('x')).rejects.toThrow('User not found');
         await expect(svc.restore('x')).rejects.toThrow('User not found');

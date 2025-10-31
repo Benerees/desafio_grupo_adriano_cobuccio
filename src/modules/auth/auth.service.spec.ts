@@ -25,9 +25,9 @@ describe('AuthService', () => {
             findByEmail: jest.fn().mockResolvedValue({ id: 'exists' }),
         };
         const svc = new AuthService(userRepo, {} as any);
-        await expect(
-            svc.register('n', 'e@test.com', 'pass'),
-        ).rejects.toThrow('Email already registered');
+        await expect(svc.register('n', 'e@test.com', 'pass')).rejects.toThrow(
+            'Email already registered',
+        );
     });
 
     it('validateUser throws when user not found or wrong password and returns user when ok', async () => {

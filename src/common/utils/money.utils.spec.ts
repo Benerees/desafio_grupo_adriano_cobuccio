@@ -4,7 +4,9 @@ describe('MoneyUtils', () => {
     it('parses valid amounts and throws on invalid', () => {
         expect(MoneyUtils.parse('10.50').toFixed(2)).toBe('10.50');
         expect(MoneyUtils.parse(5).toNumber()).toBe(5);
-        expect(() => MoneyUtils.parse('abc' as any)).toThrow('Invalid monetary amount');
+        expect(() => MoneyUtils.parse('abc' as any)).toThrow(
+            'Invalid monetary amount',
+        );
     });
 
     it('performs add, sub, lt, lte', () => {
