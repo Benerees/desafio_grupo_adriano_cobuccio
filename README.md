@@ -30,20 +30,22 @@ Documentação Swagger disponível em `http://localhost:<porta>/docs` após inic
 
 **Iniciando toda a aplicação**
 ```bash
-docker compose up -d
+docker compose --env-file .env.dev up
 ```
 
 ## Rodando o banco no docker e a aplicação localmente
 
 **Iniciando o docker para uso do banco**
 ```bash
-docker-compose up postgres-service -d
+docker-compose --env-file .env.dev up postgres-service -d
 ```
 
 **Instalando dependências**
 ```bash
 npm ci
 ```
+
+No arquivo .env.dev troque "postgres-service" por "localhost"
 
 **Rodando a aplicação em desenvolvimento(linux):**
 ```bash

@@ -50,7 +50,7 @@ export class UserController {
 
     @Get()
     @ApiBearerAuth('BearerAuth')
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(AdminGuard)
     @ApiQuery({
         name: 'page',
         required: false,
@@ -100,11 +100,6 @@ export class UserController {
 
     @Patch(':id')
     @ApiBearerAuth('BearerAuth')
-    @ApiHeader({
-        name: 'Authorization',
-        required: true,
-        description: 'Bearer <token>',
-    })
     @UseGuards(AdminOrMeGuard)
     @UsePipes(new ValidationPipe({ whitelist: true }))
     @ApiResponse({ status: 200, type: UserResponseDto })
@@ -128,11 +123,6 @@ export class UserController {
 
     @Delete(':id')
     @ApiBearerAuth('BearerAuth')
-    @ApiHeader({
-        name: 'Authorization',
-        required: true,
-        description: 'Bearer <token>',
-    })
     @UseGuards(AdminOrMeGuard)
     @ApiResponse({ status: 200, type: Object })
     @ApiResponse({

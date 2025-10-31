@@ -6,12 +6,16 @@ import {
     Inject,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { UserRepository } from '../../common/repositories/user.repository';
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
-    constructor(private jwtService: JwtService) {}
+    constructor(
+        private jwtService: JwtService,
+        private userRepository: UserRepository,
+    ) {}
 
-    canActivate(context: ExecutionContext) {
+    async canActivate(context: ExecutionContext) {
         const req = context.switchToHttp().getRequest();
         const authHeader = req.headers['authorization'];
         if (!authHeader) throw new UnauthorizedException('Missing token');
@@ -21,6 +25,10 @@ export class JwtAuthGuard implements CanActivate {
         const token = parts[1];
         try {
             const payload = this.jwtService.verify(token);
+            const userExists = await this.userRepository.findById(payload.sub);
+            if (!userExists) {
+                throw new UnauthorizedException('User no longer exists');
+            }
             req.user = payload;
             return true;
         } catch (err) {

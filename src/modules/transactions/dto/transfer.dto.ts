@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import { IsUUID, Min, IsOptional, IsNumber } from 'class-validator';
 
 export class TransferDto {
@@ -23,6 +24,7 @@ export class TransferDto {
         description: 'Amount to transfer (string decimal with 2 places)',
         example: 10.0,
     })
+    @Type(() => Number)
     @IsNumber()
     @Min(0.01)
     amount: string;
