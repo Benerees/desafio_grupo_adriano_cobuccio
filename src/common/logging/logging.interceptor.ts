@@ -4,9 +4,11 @@ import {
     ExecutionContext,
     CallHandler,
     Logger,
+    HttpException,
+    HttpStatus,
 } from '@nestjs/common';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
 import { randomUUID } from 'crypto';
 import { JwtService } from '@nestjs/jwt';
 
@@ -14,6 +16,7 @@ import { JwtService } from '@nestjs/jwt';
 export class LoggingInterceptor implements NestInterceptor {
     constructor(private readonly jwtService: JwtService) {}
     private readonly logger = new Logger('HTTP');
+    private readonly errorLogger = new Logger('Error');
     private readonly isDevelopment = process.env.NODE_ENV === 'dev';
 
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
@@ -75,11 +78,45 @@ export class LoggingInterceptor implements NestInterceptor {
 
                     if (this.isDevelopment) {
                         logData.timestamp = new Date().toISOString();
-                        logData.userId = req.user?.id;
+                        logData.userId = userId;
                     }
 
                     this.logger.log(logData);
                 },
+            }),
+            catchError((error) => {
+                const duration = Date.now() - startTime;
+
+                const errorLogData: any = {
+                    type: 'ERROR',
+                    traceId,
+                    timestamp: new Date().toISOString(),
+                    method,
+                    url,
+                    duration: `${duration}ms`,
+                    status:
+                        error instanceof HttpException
+                            ? error.getStatus()
+                            : HttpStatus.INTERNAL_SERVER_ERROR,
+                    error: error.name || 'Error',
+                    message: error.message,
+                    userId,
+                };
+
+                if (this.isDevelopment) {
+                    errorLogData.stack = error.stack;
+                    errorLogData.context = {
+                        query: req.query,
+                        params: req.params,
+                        body: ['POST', 'PUT', 'PATCH'].includes(method)
+                            ? req.body
+                            : undefined,
+                    };
+                }
+
+                this.errorLogger.error(errorLogData);
+
+                return throwError(() => error);
             }),
         );
     }
