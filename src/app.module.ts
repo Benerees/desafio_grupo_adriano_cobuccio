@@ -1,10 +1,13 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { HealthController } from './health.controller';
+import { SequelizeModule } from './common/sequelize/sequelize.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { TransactionModule } from './modules/transactions/transaction.module';
+import { UserModule } from './modules/users/user.module';
+import { LoggingModule } from './common/logging/logging.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+    imports: [SequelizeModule, AuthModule, TransactionModule, UserModule, LoggingModule],
+    controllers: [HealthController],
 })
 export class AppModule {}

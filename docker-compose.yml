@@ -1,0 +1,21 @@
+services:
+  postgres-service:
+    image: postgis/postgis:15-3.3-alpine
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${DB_PORT}:5432"
+
+  # backend-service:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   depends_on:
+  #     - postgres-service
+  #   command: 'npm run start:prod'
+  #   ports:
+  #     - "3000:80"
+  #   env_file:
+  #     - .env
