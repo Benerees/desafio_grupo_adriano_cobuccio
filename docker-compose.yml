@@ -1,21 +1,37 @@
 services:
   postgres-service:
     image: postgis/postgis:15-3.3-alpine
+    container_name: postgres-data
     environment:
       POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
       - "${DB_PORT}:5432"
+    networks:
+      - postgres-network
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
 
-  # backend-service:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   depends_on:
-  #     - postgres-service
-  #   command: 'npm run start:prod'
-  #   ports:
-  #     - "3000:80"
-  #   env_file:
-  #     - .env
+  backend-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres-service
+    command: 'npm run start:prod'
+    ports:
+      - "${PORT}:80"
+    env_file:
+      - .env.dev
+    networks:
+      - postgres-network
+    volumes:
+      - smartgas-api:/data
+
+volumes:
+  postgres-data:
+  smartgas-api:
+
+networks:
+  postgres-network:
