@@ -20,13 +20,7 @@ Teremos apenas um tipo de usuário que pode enviar ou receber dinheiro de qualqu
     cd desafio_grupo_adriano_cobuccio
     ```
 
-2. **Instalando dependências**
-
-    ```bash
-    npm ci
-    ```
-
-3. **Definindo variáveis de ambiente:**
+2. **Definindo variáveis de ambiente:**
    Copie o `.env.example` para `.env.dev` e preencha com os valores de acordo com sua necessidade.
 
 ## Documentação das rotas
@@ -46,6 +40,10 @@ docker compose up -d
 docker-compose up postgres-service -d
 ```
 
+**Instalando dependências**
+```bash
+npm ci
+```
 
 **Rodando a aplicação em desenvolvimento(linux):**
 ```bash
