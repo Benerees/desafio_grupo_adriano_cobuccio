@@ -29,23 +29,40 @@ Teremos apenas um tipo de usuário que pode enviar ou receber dinheiro de qualqu
 3. **Definindo variáveis de ambiente:**
    Copie o `.env.example` para `.env.dev` e preencha com os valores de acordo com sua necessidade.
 
-4. **Iniciando o docker para uso do banco**
+## Documentação das rotas
+Documentação Swagger disponível em `http://localhost:<porta>/docs` após iniciar a aplicação
 
-    ```bash
-    docker-compose --env-file .env.dev up postgres-service -d
-    ```
+## Rodando toda a aplicação com docker
 
-6. **Rodando a aplicação em desenvolvimento:**
-    ```bash
-    npm run start:dev
-    ```
+**Iniciando toda a aplicação**
+```bash
+docker compose up -d
+```
+
+## Rodando o banco no docker e a aplicação localmente
+
+**Iniciando o docker para uso do banco**
+```bash
+docker-compose up postgres-service -d
+```
+
+
+**Rodando a aplicação em desenvolvimento(linux):**
+```bash
+npm run start:dev
+```
+
+**Rodando a aplicação em desenvolvimento(Windows):**
+```bash
+npm run start:dev:w
+```
 
 ## Scripts principais
-
+Para separação dos ambientes e evitar erros, é setado um NODE_ENV via script, o mesmo é setado de maneiras diferentes no windows e no linux, por isso a separação
 > **No windows, Acrescente `:w` no final do comando.**  
 > Exemplo: `npm run start:dev:w`
 
 - `npm run start` Inicia a aplicação no modo de produção
 - `npm run start:dev` Inicia a aplicação no modo de desenvolvimento
 
-Documentação Swagger disponível em `/docs` quando a aplicação estiver rodando.
+

@@ -2,6 +2,8 @@ services:
   postgres-service:
     image: postgis/postgis:15-3.3-alpine
     container_name: postgres-data
+    env_file:
+      - .env.dev
     environment:
       POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_USER: ${DB_USER}
