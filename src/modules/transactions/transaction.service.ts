@@ -11,7 +11,7 @@ import { ITransactionService } from './interfaces/transaction.service.interface'
 import { TransactionModel } from '../../common/models/transaction.model';
 import { PaginationQueryDto } from '../../common/dto/pagination-query.dto';
 import { TransactionResponseDto } from './dto/transaction-response.dto';
-import MoneyService from '../../common/utils/money.service';
+import MoneyUtils from '../../common/utils/money.utils';
 
 @Injectable()
 export class TransactionService implements ITransactionService {
@@ -29,7 +29,7 @@ export class TransactionService implements ITransactionService {
             throw new BadRequestException('Cannot transfer to self');
         let amountDecimal;
         try {
-            amountDecimal = MoneyService.parse(amountStr);
+            amountDecimal = MoneyUtils.parse(amountStr);
         } catch (err) {
             throw new BadRequestException('Invalid amount');
         }
@@ -44,12 +44,12 @@ export class TransactionService implements ITransactionService {
         if (!sender || !receiver)
             throw new NotFoundException('Sender or receiver not found');
 
-        const senderBalance = MoneyService.parse(sender.balance);
+        const senderBalance = MoneyUtils.parse(sender.balance);
         if (senderBalance.lt(amountDecimal))
             throw new ConflictException('Insufficient balance');
 
         return await sequelize.transaction(async (t) => {
-            const newSenderBalance = MoneyService.sub(
+            const newSenderBalance = MoneyUtils.sub(
                 senderBalance,
                 amountDecimal,
             ).toFixed(2);
@@ -58,8 +58,8 @@ export class TransactionService implements ITransactionService {
                 { transaction: t },
             );
 
-            const receiverBalance = MoneyService.parse(receiver.balance);
-            const newReceiverBalance = MoneyService.add(
+            const receiverBalance = MoneyUtils.parse(receiver.balance);
+            const newReceiverBalance = MoneyUtils.add(
                 receiverBalance,
                 amountDecimal,
             ).toFixed(2);
@@ -72,7 +72,7 @@ export class TransactionService implements ITransactionService {
                 {
                     senderId,
                     receiverId,
-                    amount: MoneyService.toString(amountDecimal),
+                    amount: MoneyUtils.toString(amountDecimal),
                     status: 'completed',
                 } as TransactionModel,
                 { transaction: t },
@@ -119,14 +119,14 @@ export class TransactionService implements ITransactionService {
             if (!sender || !receiver)
                 throw new NotFoundException('Users involved not found');
 
-            const amountDecimal = MoneyService.parse(transactionData.amount);
+            const amountDecimal = MoneyUtils.parse(transactionData.amount);
 
-            const senderBalance = MoneyService.add(
-                MoneyService.parse(sender.balance),
+            const senderBalance = MoneyUtils.add(
+                MoneyUtils.parse(sender.balance),
                 amountDecimal,
             );
-            const receiverBalance = MoneyService.sub(
-                MoneyService.parse(receiver.balance),
+            const receiverBalance = MoneyUtils.sub(
+                MoneyUtils.parse(receiver.balance),
                 amountDecimal,
             );
             if (receiverBalance.lt(0))

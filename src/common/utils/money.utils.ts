@@ -1,6 +1,6 @@
 import Decimal from 'decimal.js';
 
-export class MoneyService {
+export class MoneyUtils {
     static parse(amount: string | number | Decimal): Decimal {
         try {
             return new Decimal(amount);
@@ -53,4 +53,4 @@ export class MoneyService {
     }
 }
 
-export default MoneyService;
+export default MoneyUtils;
