@@ -38,7 +38,7 @@ docker compose --env-file .env.dev up
 **Iniciando o docker para uso do banco**
 ```bash
 docker-compose --env-file .env.dev up postgres-service -d
-```
+```A
 
 **Instalando dependências**
 ```bash
@@ -66,3 +66,7 @@ Para separação dos ambientes e evitar erros, é setado um NODE_ENV via script,
 - `npm run start:dev` Inicia a aplicação no modo de desenvolvimento
 
 
+Credencial de admin:
+
+email: `admin@example.com`,
+password: `adminpass`,
